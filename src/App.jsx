@@ -15,7 +15,6 @@ const App = () => {
       updatedData[index] = value
       return updatedData;
     })
-    console.log(submitRecords);
   }
   useEffect(() => {
     const fetchRecords = async () => {
@@ -58,7 +57,7 @@ const App = () => {
 
   return (
     <div className='poppins p-2'>
-      <div className='text-center rounded font-bold text-lg text-white bg-blue-500 p-2 mb-3'>Questionnaire</div>
+      <div className='text-center rounded font-bold text-lg text-white bg-blue-600 p-2 mb-3'>Questionnaire</div>
       {
         loading === true ? (
           <div className='text-center'>Loading...</div>
@@ -75,7 +74,8 @@ const App = () => {
                         guideline_id={record.ID}
                         isMandatory={record.isMandatory}
                         updateRecords={updateRecords}
-                        index={index} />
+                        index={index}
+                        subset_id={record.Standard_Set} />
                     </li>
 
                   ))
