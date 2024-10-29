@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.poppins {
+    font-family: "Poppins", serif;
+  }
+
+  .css-rizt0-MuiTypography-root{
+    font-size: 14px !important;
+  }
+  ol{
+    list-style:lower-alpha;
+  }
+  .list-number{
+list-style: circle;
+  }
