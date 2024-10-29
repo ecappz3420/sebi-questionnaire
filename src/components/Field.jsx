@@ -64,7 +64,7 @@ const Field = ({ guideline, guideline_id ,isMandatory,updateRecords, index}) => 
                         <FormControlLabel className='px-2 rounded' style={{ fontSize: "15px" }} value="Complied" control={<Radio size='small' />} label="Complied" />
                         <FormControlLabel value="Not Compiled" control={<Radio size='small' />} label="Not Compiled" />
                         <FormControlLabel value="Partially Compiled" control={<Radio size='small' />} label="Pratially Compiled" />
-                        <FormControlLabel value="None of the Above" control={<Radio size='small' />} label="None of the Above" />
+                        <FormControlLabel value="Do not Know" control={<Radio size='small' />} label="Do not Know" />
                     </RadioGroup>
                     {error && <FormHelperText>Please select an option.</FormHelperText>}
                 </div>
