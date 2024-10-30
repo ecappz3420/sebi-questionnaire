@@ -16,6 +16,7 @@ const App = () => {
       return updatedData;
     })
   }
+
   useEffect(() => {
     const fetchRecords = async () => {
       try {
@@ -40,6 +41,7 @@ const App = () => {
         "Customer": queryParams.customer
       }
     }
+    console.log(formData);
     const mainRecord = await addRecord("Questionnaire_Form", formData);
     const allRecords = submitRecords.map(item => ({
       data: {
@@ -48,6 +50,7 @@ const App = () => {
       }
     }
     ))
+    
     allRecords.map(async data =>{
       await addRecord("Questionnaire_Line_Items", data);
       location.reload();

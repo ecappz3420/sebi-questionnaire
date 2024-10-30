@@ -34,13 +34,14 @@ const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, sub
                 const standard_id = standard_obj[0].Standard[0].ID;
                 try {
                     const standardObj = await fetchRecords("Standard_Report", `ID == ${standard_id}`);
-                    setObjective(standardObj[0].Objective.display_value);
+                    setObjective(standardObj[0].Objective);
                     try {
                         const objectiveObj = await fetchRecords("All_Objectives",`ID == ${standardObj[0].Objective.ID}`);
+                        setCsFunction(objectiveObj[0].CS_Function);
                         try {
                             const csFunctionObj = await fetchRecords("All_Cs_Functions",`ID == ${objectiveObj[0].CS_Function.ID}`);
-                            setCsFunction(csFunctionObj[0].Function);
-                            setGoal(csFunctionObj[0].CR_Goal.display_value)
+                            
+                            setGoal(csFunctionObj[0].CR_Goal);
                         } catch (error) {
                             console.log(error);
                         }
@@ -65,6 +66,9 @@ const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, sub
             "data": {
                 Guideline_ID: guideline_id,
                 Response: e.target.value,
+                CS_Function: csfunction.ID,
+                CR_Goal: goal.ID,
+                Objective: objective.ID,
                 Questionnaire_Form: 0
 
             }
@@ -76,9 +80,9 @@ const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, sub
             <FormControl component='field-set' error={error} required>
                 <div className="mb-3">
                     <Breadcrumbs>
-                        <Typography color='blue'>{goal}</Typography>
-                        <Typography color='blue'>{csfunction}</Typography>
-                        <Typography color='blue'>{objective}</Typography>
+                        <Typography color='blue'>{goal.display_value}</Typography>
+                        <Typography color='blue'>{csfunction.display_value}</Typography>
+                        <Typography color='blue'>{objective.display_value}</Typography>
                     </Breadcrumbs>
                 </div>
 
