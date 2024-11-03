@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import fetchL2 from '../API/fetchL2';
 import { Breadcrumbs, FormHelperText, Typography } from '@mui/material';
 import fetchRecords from '../API/fetchRecords';
+import GuideLineL2 from './GuideLineL2';
 
 const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, subset_id }) => {
     const [records, setRecords] = useState([]);
@@ -36,11 +37,11 @@ const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, sub
                     const standardObj = await fetchRecords("Standard_Report", `ID == ${standard_id}`);
                     setObjective(standardObj[0].Objective);
                     try {
-                        const objectiveObj = await fetchRecords("All_Objectives",`ID == ${standardObj[0].Objective.ID}`);
+                        const objectiveObj = await fetchRecords("All_Objectives", `ID == ${standardObj[0].Objective.ID}`);
                         setCsFunction(objectiveObj[0].CS_Function);
                         try {
-                            const csFunctionObj = await fetchRecords("All_Cs_Functions",`ID == ${objectiveObj[0].CS_Function.ID}`);
-                            
+                            const csFunctionObj = await fetchRecords("All_Cs_Functions", `ID == ${objectiveObj[0].CS_Function.ID}`);
+
                             setGoal(csFunctionObj[0].CR_Goal);
                         } catch (error) {
                             console.log(error);
@@ -92,8 +93,10 @@ const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, sub
                         <ol type='A' className='list ml-6 mb-5'>
                             {
                                 records.map((record, index) => (
-                                    <li className='text-sm' key={index}>{record.Guideline_Description}</li>
-                                ))
+                                    <>
+                                        <li className='text-sm' key={index}>{record.Guideline_Description}</li>
+                                        <GuideLineL2 guideline_le={record} />
+                                    </>))
                             }
                         </ol>
                     )
