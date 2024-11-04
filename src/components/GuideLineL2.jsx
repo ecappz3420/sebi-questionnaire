@@ -9,7 +9,6 @@ const GuideLineL2 = ({ guideline_l2 }) => {
                 const getRecords = await fetchL3(guideline_l2.ID);
                 setReccords(getRecords);
             } catch (error) {
-                console.log(error);
             }
 
         }

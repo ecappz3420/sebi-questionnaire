@@ -8,7 +8,7 @@ import { Breadcrumbs, FormHelperText, Typography } from '@mui/material';
 import fetchRecords from '../API/fetchRecords';
 import GuideLineL2 from './GuideLineL2';
 
-const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, subset_id }) => {
+const UpdateField = ({ guideline, guideline_id, isMandatory, updateRecords, index, subset_id, updatedRecord}) => {
     const [records, setRecords] = useState([]);
     const [value, setValue] = useState('');
     const [error, setError] = useState(false);
@@ -16,6 +16,20 @@ const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, sub
     const [csfunction, setCsFunction] = useState("");
     const [objective, setObjective] = useState("");
 
+
+    useEffect(()=>{
+        const loadRecords = async () => {
+            try {
+                const getRecord = await fetchRecords("All_Questionnaire_Line_Items",`Questionnaire_Form == ${updatedRecord.ID} && Guideline_ID == ${guideline_id}`);
+                setValue(getRecord[0].Response)
+            } catch (error) {
+                console.log(error)   
+            }
+            
+
+        }
+        loadRecords();
+    },[updatedRecord]);
     useEffect(() => {
         const fetch = async () => {
             try {
@@ -70,7 +84,7 @@ const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, sub
                 CS_Function: csfunction.ID,
                 CR_Goal: goal.ID,
                 Objective: objective.ID,
-                Questionnaire_Form: 0
+                Questionnaire_Form: updatedRecord.ID
 
             }
         }
@@ -124,4 +138,4 @@ const Field = ({ guideline, guideline_id, isMandatory, updateRecords, index, sub
     )
 }
 
-export default Field
+export default UpdateField

@@ -9,7 +9,6 @@ const fetchL2 = async (guideline_id) => {
         const response = await ZOHO.CREATOR.API.getAllRecords(config);
         return response.data;
     } catch (error) {
-        console.error(error.responseText);
     }
 }
 export default fetchL2

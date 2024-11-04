@@ -1,55 +1,59 @@
-const fetchStandardSet =async () => {
+const fetchStandardSet = async () => {
     const queryParams = await ZOHO.CREATOR.UTIL.getQueryParams();
     const config = {
         appName: "cyber-security",
         reportName: "Standard_Set_Report",
         criteria: `RE == ${queryParams.RE_ID}`
-    }
+    };
+
     try {
         const response = await ZOHO.CREATOR.API.getAllRecords(config);
-        let allrecords = response.data;
-        allrecords.forEach(record => { 
-            const isMandatory = record.Mandatory_RE_s ? record.Mandatory_RE_s.map(rec => rec.ID).includes(queryParams.RE_ID) : false;
-            record["isMandatory"] = isMandatory;
-        } )
-        return allrecords;
+        const allRecords = response.data;
+
+        allRecords.forEach(record => {
+            const isMandatory = record.Mandatory_RE_s ?
+                record.Mandatory_RE_s.map(rec => rec.ID).includes(queryParams.RE_ID) : false;
+            record.isMandatory = isMandatory;
+        });
+
+        return allRecords;
     } catch (error) {
-        console.log(error);
+        console.error("Error fetching standard set records:", error);
+        return [];
     }
-}
+};
 
 const fetch = async () => {
     try {
         await ZOHO.CREATOR.init();
         const standardSetRecords = await fetchStandardSet();
-        let records = [];
 
-        for (let i = 0; i < standardSetRecords.length; i++) {
+        // Use Promise.all with map to fetch records concurrently
+        const records = await Promise.all(standardSetRecords.map(async (standardSetRecord) => {
             const config = {
                 appName: "cyber-security",
                 reportName: "All_Guidelines",
-                criteria: `Standard_Set == ${standardSetRecords[i].ID}`
+                criteria: `Standard_Set == ${standardSetRecord.ID}`
             };
 
             try {
                 const response = await ZOHO.CREATOR.API.getAllRecords(config);
-                records = [
-                    ...records,
-                    ...response.data.map(record => ({
-                        ...record,
-                        isMandatory: standardSetRecords[i].isMandatory === true
-                    }))
-                ];
+                return response.data.map(record => ({
+                    ...record,
+                    isMandatory: standardSetRecord.isMandatory === true
+                }));
             } catch (error) {
-                console.log("Error fetching records for standard set ID:", standardSetRecords[i].ID, error);
+                // console.error("Error fetching records for standard set ID:", standardSetRecord.ID, error);
+                return [];
             }
-        }
-        return records;
+        }));
 
+        
+        return records.flat(); 
     } catch (error) {
-        console.log("Error initializing or fetching standard set:", error);
+        // console.error("Error initializing or fetching standard set:", error);
+        return [];
     }
 };
 
-
-export default fetch
+export default fetch;
