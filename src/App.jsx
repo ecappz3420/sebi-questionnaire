@@ -68,9 +68,9 @@ const App = () => {
                 }
             }));
 
-            await Promise.all(allRecords.map(async data => {
+            allRecords.map(async data => {
                 await addRecord("Questionnaire_Line_Items", data);
-            }));
+            });
             window.location.reload();
 
         } else if (fromType === "Update") {
